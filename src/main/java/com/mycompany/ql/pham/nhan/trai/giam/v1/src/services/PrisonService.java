@@ -3,6 +3,7 @@ package com.mycompany.ql.pham.nhan.trai.giam.v1.src.services;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mycompany.ql.pham.nhan.trai.giam.v1.src.models.Prison;
+import com.mycompany.ql.pham.nhan.trai.giam.v1.src.models.PrisonSummary;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -105,6 +106,22 @@ public class PrisonService {
             return 0;
         }
     }
+    
+    public List<PrisonSummary> getAllPrisonSummaries() {
+    List<PrisonSummary> summaries = new ArrayList<>();
+    if (prisons == null || prisons.isEmpty()) {
+        System.out.println("Không có trại giam nào trong hệ thống.");
+        return summaries;
+    }
+    for (Prison prison : prisons) {
+        String prisonName = prison.getNamePrison(); 
+        int prisonerCount = prison.getPrisoners().size();
+        summaries.add(new PrisonSummary(prisonName, prisonerCount));
+    }
+
+    return summaries;
+}
+
 
     // Lấy danh sách tất cả trại giam
     public List<Prison> getAllPrisons() {

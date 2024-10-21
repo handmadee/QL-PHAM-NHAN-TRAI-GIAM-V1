@@ -4,7 +4,9 @@ import java.awt.*;
 import com.mycompany.ql.pham.nhan.trai.giam.v1.src.components.SidebarMenu;
 import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.HomeGUI;
 import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.AboutViteGUI;
+import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.DashBoardGUI;
 import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.OffenseManagementGUI;
+import com.mycompany.ql.pham.nhan.trai.giam.v1.src.utils.RefreshablePanel;
 
 
 public class MainFrame extends JFrame {
@@ -23,8 +25,9 @@ public class MainFrame extends JFrame {
         cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
         add(contentPanel, BorderLayout.CENTER);
-         HomeGUI homeGUI = new HomeGUI();
-        contentPanel.add(homeGUI.getContentPanel(), "Home");
+//         HomeGUI homeGUI = new HomeGUI();
+//        contentPanel.add(homeGUI.getContentPanel(), "Home");
+        contentPanel.add(new DashBoardGUI(), "Home");
         contentPanel.add(new AboutViteGUI(), "Infor");
         contentPanel.add(new PrisonManagement(), "PrisonManagement");
         contentPanel.add(new OffenseManagementGUI(), "OffenseManagementGUI");
@@ -34,6 +37,11 @@ public class MainFrame extends JFrame {
 
     public void switchScreen(String screenName) {
         cardLayout.show(contentPanel, screenName);
+       for (Component component : contentPanel.getComponents()) {
+        if (component.isVisible() && component instanceof RefreshablePanel) {
+            ((RefreshablePanel) component).refreshData();
+        }
+    }
     }
  
     public static void main(String[] args) {
