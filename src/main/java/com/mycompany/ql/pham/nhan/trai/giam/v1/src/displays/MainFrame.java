@@ -35,7 +35,7 @@ public class MainFrame extends JFrame {
     public void switchScreen(String screenName) {
         cardLayout.show(contentPanel, screenName);
     }
-
+ 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new MainFrame().setVisible(true);

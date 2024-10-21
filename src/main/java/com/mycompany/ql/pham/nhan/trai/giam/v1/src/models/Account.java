@@ -1,23 +1,28 @@
+package com.mycompany.ql.pham.nhan.trai.giam.v1.src.models;
 
 public class Account {
-
-    private Long id;
+    private static int currentId = 1;
+    private int id;
     private String username;
     private String password;
-    private int role = 2410;
+    private int role;
 
-    // Constructors
     public Account() {
     }
 
-    public Account(String username, String password) {
+    public Account(String username, String password, int role) {
+         this.id = currentId++;
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
-    // Getters and Setters
-    public Long getId() {
+    public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {
