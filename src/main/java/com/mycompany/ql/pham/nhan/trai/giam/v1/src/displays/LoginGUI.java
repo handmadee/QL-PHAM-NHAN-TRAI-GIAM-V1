@@ -5,13 +5,18 @@
 package com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays;
 
 import com.mycompany.ql.pham.nhan.trai.giam.v1.src.components.GradientPanel;
+import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.MainFrame;
 import com.mycompany.ql.pham.nhan.trai.giam.v1.src.services.SetPlayhoder;
+import com.mycompany.ql.pham.nhan.trai.giam.v1.src.services.AccountService;
+import com.mycompany.ql.pham.nhan.trai.giam.v1.src.utils.Validator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -33,8 +38,8 @@ public class LoginGUI extends javax.swing.JFrame {
         LoginContent.revalidate();
         LoginContent.repaint();
         btnEye.setIcon(eyeIcon);
-        SetPlayhoder.setPlaceholder(txtUsername, "please username");
-        SetPlayhoder.setPlaceholder(txtPass, "please password");
+//        SetPlayhoder.setPlaceholder(txtUsername, "please username");
+//        SetPlayhoder.setPlaceholder(txtPass, "please password");
         btnEye.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -49,6 +54,33 @@ public class LoginGUI extends javax.swing.JFrame {
                 }
             }
         });
+          AccountService accService = new AccountService();
+        
+        // btn login 
+        btnLogin.addActionListener(l -> {
+    String username = txtUsername.getText().trim();
+    String password = new String(txtPass.getPassword());
+
+    if (validateForm(username, password)) {
+        boolean loginResult = accService.login(username, password);
+
+        if (!loginResult) {
+            JOptionPane.showMessageDialog(
+                this, 
+                "Tài khoản hoặc mật khẩu sai", 
+                "Lỗi", 
+                JOptionPane.ERROR_MESSAGE
+            );
+        } else {
+            new MainFrame().setVisible(true);
+            dispose();  
+        }
+    }
+});
+
+        
+        
+        
     }
 
     /**
@@ -146,7 +178,11 @@ public class LoginGUI extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 76, 38));
         jLabel2.setText("Username");
 
-        txtUsername.setText("jTextField1");
+        txtUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUsernameActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 76, 38));
@@ -166,7 +202,6 @@ public class LoginGUI extends javax.swing.JFrame {
         btnLogin.setForeground(new java.awt.Color(0, 102, 51));
         btnLogin.setText("LOGIN");
 
-        txtPass.setText("jPasswordField1");
         txtPass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPassActionPerformed(evt);
@@ -261,6 +296,25 @@ public class LoginGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // validate 
+       private boolean validateForm(String username,String pass) {
+           try {
+               Validator.validateNotEmpty(username, "username");
+               Validator.validateNotEmpty(pass, "password");
+               Validator.validateUsername(username);
+              if (!joConfirm.isSelected()) {
+//              JOptionPane.showMessageDialog(this, "Vui lòng xác nhận bạn không phải là máy!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                 throw new IllegalArgumentException("Vui lòng xác nhận bạn không phải là máy");
+              }
+              return true;
+           } catch (IllegalArgumentException ex) {
+                  JOptionPane.showMessageDialog(null, "Lỗi: " + ex.getMessage(),
+                            "Thông báo lỗi", JOptionPane.ERROR_MESSAGE);
+           }
+           
+    return false;
+    }
+       
     private void joConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joConfirmActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_joConfirmActionPerformed
@@ -272,6 +326,10 @@ public class LoginGUI extends javax.swing.JFrame {
     private void btnEyeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEyeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEyeActionPerformed
+
+    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUsernameActionPerformed
 
     /**
      * @param args the command line arguments

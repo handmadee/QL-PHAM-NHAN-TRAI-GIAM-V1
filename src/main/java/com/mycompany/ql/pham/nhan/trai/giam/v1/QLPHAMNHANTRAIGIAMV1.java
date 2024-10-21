@@ -4,7 +4,7 @@
 
 package com.mycompany.ql.pham.nhan.trai.giam.v1;
 import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.LoginGUI;
-import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.HomeGUI;
+import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.MainFrame;
 /**
  *
  * @author admin
@@ -12,6 +12,6 @@ import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.HomeGUI;
 public class QLPHAMNHANTRAIGIAMV1 {
 
     public static void main(String[] args) {
-                      new LoginGUI().setVisible(true);
+                      new MainFrame().setVisible(true);
     }
 }

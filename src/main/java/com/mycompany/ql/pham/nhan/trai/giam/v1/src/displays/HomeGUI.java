@@ -3,9 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays;
-import com.mycompany.ql.pham.nhan.trai.giam.v1.src.components.SidebarMenu;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -18,20 +19,26 @@ import org.jfree.data.category.DefaultCategoryDataset;
  */
 public class HomeGUI extends javax.swing.JFrame {
 
+
+
     /**
      * Creates new form HomeGUI
      */
     public HomeGUI() {
+        setTitle("Trang admin vite");
         initComponents();
-            addSidebarMenu();
          createBarChart();
     }
     
+      public JPanel getContentPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        for (java.awt.Component comp : this.getContentPane().getComponents()) {
+            panel.add(comp);
+        }
+        return panel;
+     }
     
-     private void addSidebarMenu() {
-        SidebarMenu sidebarMenu = new SidebarMenu(); // Tạo SidebarMenu
-        getContentPane().add(sidebarMenu, BorderLayout.WEST); // Thêm vào phía Tây (bên trái)
-    }
     
     // Jpanal chart 
     private void createBarChart() {
@@ -48,7 +55,7 @@ public class HomeGUI extends javax.swing.JFrame {
         );
 
         ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(700, 500));
+        chartPanel.setPreferredSize(new Dimension(1100, 500));
         jChart.setLayout(new BorderLayout());
         jChart.add(chartPanel, BorderLayout.CENTER);
         jChart.validate(); 
@@ -71,7 +78,6 @@ public class HomeGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        sidebarMenu1 = new com.mycompany.ql.pham.nhan.trai.giam.v1.src.components.SidebarMenu();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -85,12 +91,12 @@ public class HomeGUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txtPrison2 = new javax.swing.JLabel();
         jChart = new javax.swing.JPanel();
-        sidebarMenu2 = new com.mycompany.ql.pham.nhan.trai.giam.v1.src.components.SidebarMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1350, 800));
 
         jPanel4.setBackground(new java.awt.Color(97, 173, 120));
+        jPanel4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         txtHouse.setFont(new java.awt.Font("Helvetica", 1, 18)); // NOI18N
@@ -128,6 +134,7 @@ public class HomeGUI extends javax.swing.JFrame {
         );
 
         jPanel5.setBackground(new java.awt.Color(97, 173, 120));
+        jPanel5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jLabel2.setFont(new java.awt.Font("Helvetica", 1, 14)); // NOI18N
@@ -198,6 +205,7 @@ public class HomeGUI extends javax.swing.JFrame {
         );
 
         jPanel6.setBackground(new java.awt.Color(97, 173, 120));
+        jPanel6.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jLabel5.setFont(new java.awt.Font("Helvetica", 1, 14)); // NOI18N
@@ -269,12 +277,11 @@ public class HomeGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(sidebarMenu2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                         .addComponent(jChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
@@ -282,10 +289,9 @@ public class HomeGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jChart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
-            .addComponent(sidebarMenu2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         pack();
@@ -337,8 +343,6 @@ public class HomeGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private com.mycompany.ql.pham.nhan.trai.giam.v1.src.components.SidebarMenu sidebarMenu1;
-    private com.mycompany.ql.pham.nhan.trai.giam.v1.src.components.SidebarMenu sidebarMenu2;
     private javax.swing.JLabel txtHouse;
     private javax.swing.JLabel txtPrison;
     private javax.swing.JLabel txtPrison2;
