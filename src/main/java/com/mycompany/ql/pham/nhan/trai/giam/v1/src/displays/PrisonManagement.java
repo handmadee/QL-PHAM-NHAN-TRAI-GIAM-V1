@@ -1,5 +1,4 @@
 package com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays;
-
 import javax.swing.*;
 import java.awt.*;
 import com.mycompany.ql.pham.nhan.trai.giam.v1.src.components.Input;
