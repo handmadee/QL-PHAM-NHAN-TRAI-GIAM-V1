@@ -4,94 +4,120 @@
  */
 package com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays;
 
-import com.mycompany.ql.pham.nhan.trai.giam.v1.src.components.GradientPanel;
-import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.MainFrame;
-import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.SignUpGUI;
-import com.mycompany.ql.pham.nhan.trai.giam.v1.src.services.SetPlayhoder;
 import com.mycompany.ql.pham.nhan.trai.giam.v1.src.services.AccountService;
 import com.mycompany.ql.pham.nhan.trai.giam.v1.src.utils.Validator;
-import java.awt.BorderLayout;
-import java.awt.Color;
+import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.LoginGUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 
 /**
  *
  * @author admin
  */
-public class LoginGUI extends javax.swing.JFrame {
+public class SignUpGUI extends javax.swing.JFrame {
 
     /**
-     * Creates new form LoginGUI
+     * Creates new form SignUpGUI
      */
-    public LoginGUI() {
-        setTitle("Đăng nhập admin");
-         ImageIcon eyeIcon = new ImageIcon(getClass().getResource("/access/icon/eye_1.png"));
-          ImageIcon hideEyeIcon = new ImageIcon(getClass().getResource("/access/icon/hideEye.png"));
+    public SignUpGUI() {
+        setTitle("Đăng ký tài khoản");
         initComponents();
-        GradientPanel gradientPanel = new GradientPanel(Color.GREEN, Color.BLUE);
-        LoginContent.setLayout(new BorderLayout());
-        LoginContent.add(gradientPanel, BorderLayout.CENTER);
-        LoginContent.revalidate();
-        LoginContent.repaint();
+        ImageIcon eyeIcon = new ImageIcon(getClass().getResource("/access/icon/eye_1.png"));
+        ImageIcon hideEyeIcon = new ImageIcon(getClass().getResource("/access/icon/hideEye.png"));
         btnEye.setIcon(eyeIcon);
-//        SetPlayhoder.setPlaceholder(txtUsername, "please username");
-//        SetPlayhoder.setPlaceholder(txtPass, "please password");
+        btnEyeFirt.setIcon(eyeIcon);
         btnEye.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (btnEye.isSelected()) {
-                    txtPass.setEchoChar((char) 0); 
-                                   btnEye.setIcon(hideEyeIcon);
-           
+                    txtReapeatPass.setEchoChar((char) 0);
+                    btnEye.setIcon(hideEyeIcon);
+
                 } else {
-                    txtPass.setEchoChar('*'); 
-                  btnEye.setIcon(eyeIcon);
-                       
+                    txtReapeatPass.setEchoChar('*');
+                    btnEye.setIcon(eyeIcon);
+
                 }
             }
         });
-          AccountService accService = new AccountService();
-        
-        // btn login 
-        btnLogin.addActionListener(l -> {
-    String username = txtUsername.getText().trim();
-    String password = new String(txtPass.getPassword());
+        btnEyeFirt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (btnEye.isSelected()) {
+                    txtPass.setEchoChar((char) 0);
+                    btnEyeFirt.setIcon(hideEyeIcon);
 
-    if (validateForm(username, password)) {
-        boolean loginResult = accService.login(username, password);
+                } else {
+                    txtPass.setEchoChar('*');
+                    btnEyeFirt.setIcon(eyeIcon);
 
-        if (!loginResult) {
-            JOptionPane.showMessageDialog(
-                this, 
-                "Tài khoản hoặc mật khẩu sai", 
-                "Lỗi", 
-                JOptionPane.ERROR_MESSAGE
-            );
-        } else {
-            new MainFrame().setVisible(true);
-            dispose();  
+                }
+            }
+        });
+
+        btnSignup.addActionListener(evt -> btnSignupActionPerformed1(evt));
+        btnLg1.addActionListener(l -> {
+            new LoginGUI().setVisible(true);
+            dispose();
+        });
+
+    }
+
+    
+    
+    
+    private void btnSignupActionPerformed1(java.awt.event.ActionEvent evt) {
+    try {
+        // Lấy thông tin từ các trường nhập liệu
+        String username = txtUserName.getText();
+        String password = new String(txtPass.getPassword());
+        String repeatPassword = new String(txtReapeatPass.getPassword());
+
+        // Kiểm tra các trường không được để trống
+        Validator.validateNotEmpty(username, "Tên đăng nhập");
+        Validator.validateNotEmpty(password, "Mật khẩu");
+        Validator.validateNotEmpty(repeatPassword, "Nhập lại mật khẩu");
+
+        // Kiểm tra độ dài tên đăng nhập và mật khẩu
+        Validator.validateUsername(username);
+        Validator.validateMinLength(password, 6, "Mật khẩu");
+
+        // Kiểm tra xem mật khẩu và mật khẩu nhập lại có khớp không
+        if (!password.equals(repeatPassword)) {
+            throw new IllegalArgumentException("Mật khẩu và mật khẩu nhập lại không khớp.");
         }
-    }
-    
- 
-});
-           btnSignup.addActionListener(l -> {
-          new SignUpGUI().setVisible(true);
-            dispose();  
-          });
 
-        
-        
-        
+        // Kiểm tra checkbox xác nhận người dùng không phải là máy
+        if (!joConfirm.isSelected()) {
+            throw new IllegalArgumentException("Vui lòng xác nhận bạn không phải là máy.");
+        }
+
+        // Kiểm tra xem tên đăng nhập đã tồn tại chưa
+        AccountService accountService = new AccountService();
+        if (accountService.getAllAccounts().stream().anyMatch(acc -> acc.getUsername().equals(username))) {
+            throw new IllegalArgumentException("Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.");
+        }
+
+        // Thêm tài khoản mới
+        accountService.addAccount(username, password, 1); // Role = 1 cho người dùng thông thường
+
+        // Thông báo thành công
+        javax.swing.JOptionPane.showMessageDialog(this, "Đăng ký tài khoản thành công!");
+
+        // Chuyển sang màn hình đăng nhập
+        new LoginGUI().setVisible(true);
+        dispose();
+
+    } catch (IllegalArgumentException e) {
+        // Hiển thị thông báo lỗi
+        javax.swing.JOptionPane.showMessageDialog(this, e.getMessage(), "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+    } catch (Exception ex) {
+        // Xử lý lỗi không mong muốn
+        ex.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this, "Đã xảy ra lỗi. Vui lòng thử lại sau.", "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
-    
-    
-   
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -115,14 +141,17 @@ public class LoginGUI extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtUsername = new javax.swing.JTextField();
+        txtUserName = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         joConfirm = new javax.swing.JRadioButton();
-        btnLogin = new javax.swing.JButton();
-        txtPass = new javax.swing.JPasswordField();
-        btnEye = new javax.swing.JToggleButton();
-        jLabel5 = new javax.swing.JLabel();
         btnSignup = new javax.swing.JButton();
+        txtReapeatPass = new javax.swing.JPasswordField();
+        btnEye = new javax.swing.JToggleButton();
+        btnEyeFirt = new javax.swing.JToggleButton();
+        txtPass = new javax.swing.JPasswordField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        btnLg1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -184,7 +213,7 @@ public class LoginGUI extends javax.swing.JFrame {
         LoginContentLayout.setHorizontalGroup(
             LoginContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LoginContentLayout.createSequentialGroup()
-                .addGap(0, 142, Short.MAX_VALUE)
+                .addGap(0, 130, Short.MAX_VALUE)
                 .addGroup(LoginContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -194,7 +223,7 @@ public class LoginGUI extends javax.swing.JFrame {
                         .addGap(486, 486, 486)
                         .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 142, Short.MAX_VALUE))
+                .addGap(0, 131, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginContentLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -227,7 +256,7 @@ public class LoginGUI extends javax.swing.JFrame {
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
             .addGroup(LoginContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -245,21 +274,21 @@ public class LoginGUI extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 77, 55));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("LOGIN");
+        jLabel1.setText("SIGN UP");
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 76, 38));
         jLabel2.setText("Username");
 
-        txtUsername.addActionListener(new java.awt.event.ActionListener() {
+        txtUserName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsernameActionPerformed(evt);
+                txtUserNameActionPerformed(evt);
             }
         });
 
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 76, 38));
-        jLabel3.setText("Password");
+        jLabel3.setText("Repeat password");
 
         joConfirm.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         joConfirm.setForeground(new java.awt.Color(0, 76, 38));
@@ -270,14 +299,19 @@ public class LoginGUI extends javax.swing.JFrame {
             }
         });
 
-        btnLogin.setBackground(new java.awt.Color(0, 102, 51));
-        btnLogin.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
-        btnLogin.setForeground(new java.awt.Color(0, 102, 51));
-        btnLogin.setText("LOGIN");
-
-        txtPass.addActionListener(new java.awt.event.ActionListener() {
+        btnSignup.setBackground(new java.awt.Color(0, 102, 51));
+        btnSignup.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        btnSignup.setForeground(new java.awt.Color(0, 102, 51));
+        btnSignup.setText("SIGNUP");
+        btnSignup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPassActionPerformed(evt);
+                btnSignupActionPerformed(evt);
+            }
+        });
+
+        txtReapeatPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtReapeatPassActionPerformed(evt);
             }
         });
 
@@ -288,17 +322,34 @@ public class LoginGUI extends javax.swing.JFrame {
             }
         });
 
+        btnEyeFirt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/access/icon/eye_1.png"))); // NOI18N
+        btnEyeFirt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEyeFirtActionPerformed(evt);
+            }
+        });
+
+        txtPass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPassActionPerformed(evt);
+            }
+        });
+
         jLabel5.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 76, 38));
-        jLabel5.setText("Đăng ký tài khoản ngay nếu bạn chưa có ");
+        jLabel5.setText("Password");
 
-        btnSignup.setFont(new java.awt.Font("Helvetica Neue", 2, 14)); // NOI18N
-        btnSignup.setForeground(new java.awt.Color(153, 0, 0));
-        btnSignup.setText("Signup");
-        btnSignup.setBorder(null);
-        btnSignup.addActionListener(new java.awt.event.ActionListener() {
+        jLabel13.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(0, 76, 38));
+        jLabel13.setText("Tôi đã có tài khoản rồi");
+
+        btnLg1.setFont(new java.awt.Font("Helvetica Neue", 2, 14)); // NOI18N
+        btnLg1.setForeground(new java.awt.Color(153, 0, 0));
+        btnLg1.setText("Login");
+        btnLg1.setBorder(null);
+        btnLg1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSignupActionPerformed(evt);
+                btnLg1ActionPerformed(evt);
             }
         });
 
@@ -310,34 +361,40 @@ public class LoginGUI extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(joConfirm))
+                            .addComponent(joConfirm)
+                            .addComponent(jLabel2))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtUsername)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnSignup))
-                                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnEye)
-                                .addGap(18, 18, 18)))
+                            .addComponent(txtUserName)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPass)
+                                    .addComponent(txtReapeatPass))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnEyeFirt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnEye, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(17, 17, 17))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(144, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(213, 213, 213))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(157, 157, 157))))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnLg1))
+                            .addComponent(btnSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(153, 153, 153))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,22 +404,28 @@ public class LoginGUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnEyeFirt, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnEye, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(txtPass, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
+                    .addComponent(txtReapeatPass, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
                 .addComponent(joConfirm)
                 .addGap(18, 18, 18)
-                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
+                .addComponent(btnSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(btnSignup))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel13)
+                    .addComponent(btnLg1))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -392,45 +455,39 @@ public class LoginGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEyeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEyeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEyeActionPerformed
 
-    private void txtPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassActionPerformed
+    private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPassActionPerformed
+    }//GEN-LAST:event_txtUserNameActionPerformed
 
     private void joConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joConfirmActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_joConfirmActionPerformed
 
-    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
+    private void txtReapeatPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtReapeatPassActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtUsernameActionPerformed
+    }//GEN-LAST:event_txtReapeatPassActionPerformed
+
+    private void btnEyeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEyeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEyeActionPerformed
+
+    private void btnEyeFirtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEyeFirtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEyeFirtActionPerformed
+
+    private void txtPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPassActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPassActionPerformed
 
     private void btnSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSignupActionPerformed
 
-    // validate 
-       private boolean validateForm(String username,String pass) {
-           try {
-               Validator.validateNotEmpty(username, "username");
-               Validator.validateNotEmpty(pass, "password");
-               Validator.validateUsername(username);
-              if (!joConfirm.isSelected()) {
-//              JOptionPane.showMessageDialog(this, "Vui lòng xác nhận bạn không phải là máy!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                 throw new IllegalArgumentException("Vui lòng xác nhận bạn không phải là máy");
-              }
-              return true;
-           } catch (IllegalArgumentException ex) {
-                  JOptionPane.showMessageDialog(null, "Lỗi: " + ex.getMessage(),
-                            "Thông báo lỗi", JOptionPane.ERROR_MESSAGE);
-           }
-           
-    return false;
-    }
-       
+    private void btnLg1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLg1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLg1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -448,23 +505,23 @@ public class LoginGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SignUpGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SignUpGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SignUpGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SignUpGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-             LoginGUI loginGUI = new LoginGUI();
-          loginGUI.pack(); // 
-            loginGUI.setLocationRelativeTo(null); 
-            loginGUI.setVisible(true);
+             SignUpGUI signUpGUI = new SignUpGUI();
+            signUpGUI.pack(); 
+            signUpGUI.setLocationRelativeTo(null); 
+            signUpGUI.setVisible(true);
             }
         });
     }
@@ -472,12 +529,14 @@ public class LoginGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel LoginContent;
     private javax.swing.JToggleButton btnEye;
-    private javax.swing.JButton btnLogin;
+    private javax.swing.JToggleButton btnEyeFirt;
+    private javax.swing.JButton btnLg1;
     private javax.swing.JButton btnSignup;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -490,6 +549,7 @@ public class LoginGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JRadioButton joConfirm;
     private javax.swing.JPasswordField txtPass;
-    private javax.swing.JTextField txtUsername;
+    private javax.swing.JPasswordField txtReapeatPass;
+    private javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables
 }
