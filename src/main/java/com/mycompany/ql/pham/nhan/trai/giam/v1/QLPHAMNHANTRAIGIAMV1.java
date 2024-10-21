@@ -3,7 +3,8 @@
  */
 
 package com.mycompany.ql.pham.nhan.trai.giam.v1;
-
+import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.LoginGUI;
+import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.MainFrame;
 /**
  *
  * @author admin
@@ -11,6 +12,6 @@ package com.mycompany.ql.pham.nhan.trai.giam.v1;
 public class QLPHAMNHANTRAIGIAMV1 {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+                      new LoginGUI().setVisible(true);
     }
 }
