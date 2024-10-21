@@ -5,7 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.MainFrame;
-
+import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.LoginGUI;
 public class SidebarMenu extends JPanel {
     private MainFrame mainFrame;
     
@@ -37,7 +37,7 @@ public class SidebarMenu extends JPanel {
         add(createMenuItem("Quản lý phiếu đăng ký", "/access/icon/stock.png", "RegistrationManageGUI"));
         add(Box.createVerticalStrut(20)); // Khoảng cách giữa các mục
         add(createMenuItem("Thông tin !", "/access/icon/user.png", "Infor"));
-        add(createMenuItem("Đăng Xuất", "/access/icon/setting.png", "Trang Chủ"));
+        add(createMenuItem("Đăng Xuất", "/access/icon/setting.png", "Logout"));
     }
 
     private JPanel createMenuItem(String text, String iconPath, String screenName) {
@@ -58,14 +58,32 @@ public class SidebarMenu extends JPanel {
 
         // Xử lý sự kiện click vào menu item
         panel.addMouseListener(new MouseAdapter() {
-             @Override
-            public void mouseClicked(MouseEvent e) {
-                if (mainFrame != null) {
-                    mainFrame.switchScreen(screenName); 
-                } else {
-                    System.err.println("MainFrame is null!");  
+       @Override
+    public void mouseClicked(MouseEvent e) {
+        if (mainFrame != null) {
+            if ("Logout".equals(screenName)) {
+                int response = JOptionPane.showConfirmDialog(
+                        null, 
+                        "Bạn có chắc chắn muốn thoát ra không?", 
+                        "Xác nhận Đăng Xuất", 
+                        JOptionPane.YES_NO_OPTION, 
+                        JOptionPane.QUESTION_MESSAGE
+                );
+
+                if (response == JOptionPane.YES_OPTION) {
+                    new LoginGUI().setVisible(true);
+                    JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(panel);
+                    if (currentFrame != null) {
+                        currentFrame.dispose(); 
+                    }
                 }
+            } else {
+                mainFrame.switchScreen(screenName);
             }
+        } else {
+            System.err.println("MainFrame is null!");
+        }
+    }
 
             @Override
             public void mouseEntered(MouseEvent e) {

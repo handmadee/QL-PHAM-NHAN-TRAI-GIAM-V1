@@ -121,5 +121,10 @@ public class RegistrationService {
             .findFirst()
             .orElse(null);
 }
+    
+    public int getTotalRegistrations() {
+    return registrations.size();
+}
+
 
 }

@@ -12,6 +12,6 @@ import com.mycompany.ql.pham.nhan.trai.giam.v1.src.displays.MainFrame;
 public class QLPHAMNHANTRAIGIAMV1 {
 
     public static void main(String[] args) {
-                      new MainFrame().setVisible(true);
+                      new LoginGUI().setVisible(true);
     }
 }
