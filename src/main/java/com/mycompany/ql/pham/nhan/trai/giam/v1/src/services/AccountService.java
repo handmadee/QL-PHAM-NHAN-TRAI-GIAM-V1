@@ -2,7 +2,7 @@ package com.mycompany.ql.pham.nhan.trai.giam.v1.src.services;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.mycompany.ql.pham.nhan.trai.giam.v1.models.Account;
+import com.mycompany.ql.pham.nhan.trai.giam.v1.src.models.Account;
 
 import java.io.File;
 import java.io.FileReader;

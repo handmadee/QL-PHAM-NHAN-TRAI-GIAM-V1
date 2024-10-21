@@ -1,3 +1,1 @@
-{
-    "name": "admin"
-}
+[{"id":1,"name":"Nguyễn Văn A","uid":3,"relationship":"Trong gia đình","identification":"0123456789","address":"123 Đường ABC, Quận 1, TP.HCM","reason":"Đăng ký hộ khẩu"},{"id":3,"name":"Phạm Xuân Đạt","uid":2,"relationship":"Trong gia đình","identification":"987654321012","address":"456 Đường XYZ, Quận 2, TP.HCM","reason":"Chuyển hộ khẩu","date":"2024-10-21"},{"id":4,"name":"Nguyễn như ý","uid":2,"relationship":"Trong gia đình","identification":"012345678912","address":"123 Đường ABC, Quận 1, TP.HCM","reason":"Đăng ký hộ khẩu","date":"2024-10-21"}]

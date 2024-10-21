@@ -14,7 +14,7 @@ public class SelectDate extends JPanel {
         // Cấu hình cho DatePicker
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setFormatForDatesCommonEra("dd-MM-yyyy");
-        dateSettings.setAllowEmptyDates(false); // Không cho phép bỏ trống ngày
+        dateSettings.setAllowEmptyDates(false); 
 
         // Khởi tạo DatePicker
         datePicker = new DatePicker(dateSettings);
@@ -24,12 +24,24 @@ public class SelectDate extends JPanel {
         add(datePicker);
     }
 
-    // Phương thức lấy ngày đã chọn
+    
     public LocalDate getSelectedDate() {
         return datePicker.getDate();
     }
 
-    // Kiểm tra hoạt động của SelectDate như một component
+ 
+    public void setDate(String date) {
+        try {
+            LocalDate localDate = LocalDate.parse(date); // Chuyển chuỗi sang LocalDate
+            datePicker.setDate(localDate); // Thiết lập ngày cho DatePicker
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Ngày không hợp lệ. Định dạng phải là yyyy-MM-dd.", 
+                "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("Test SelectDate Component");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,10 +65,26 @@ public class SelectDate extends JPanel {
             }
         });
 
-        // Bố cục giao diện thử nghiệm
+      
+        JButton btnSetDate = new JButton("Thiết Lập Ngày");
+        btnSetDate.addActionListener(e -> {
+            String inputDate = JOptionPane.showInputDialog(
+                frame, "Nhập ngày (yyyy-MM-dd):", "Thiết Lập Ngày", 
+                JOptionPane.QUESTION_MESSAGE);
+            if (inputDate != null && !inputDate.trim().isEmpty()) {
+                selectDate.setDate(inputDate); // Gọi phương thức setDate
+            }
+        });
+
+
         frame.setLayout(new BorderLayout());
         frame.add(selectDate, BorderLayout.NORTH);
-        frame.add(btnShowDate, BorderLayout.SOUTH);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(btnShowDate);
+        buttonPanel.add(btnSetDate);
+
+        frame.add(buttonPanel, BorderLayout.SOUTH);
 
         frame.setVisible(true);
     }
