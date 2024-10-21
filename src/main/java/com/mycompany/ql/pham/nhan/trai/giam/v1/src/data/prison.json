@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "name_prison": "CV1",
+    "location": "HA.1 Quận 7",
+    "capacity": 50,
+    "prison": [
+      {
+        "id": 1,
+        "name": "Nguyễn Văn A",
+        "date": "24/10/2003",
+        "crime": "Tội đi tù",
+        "status": "Vẫn còn ở trong tù"
+      },
+      {
+        "id": 2,
+        "name": "Trần Thị B",
+        "date": "15/08/2005",
+        "crime": "Trộm cắp tài sản",
+        "status": "Đang chờ xét xử"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name_prison": "CV2",
+    "location": "HA.2 Bình Thạnh",
+    "capacity": 75,
+    "prison": [
+      {
+        "id": 3,
+        "name": "Lê Văn C",
+        "date": "12/11/2010",
+        "crime": "Buôn bán ma túy",
+        "status": "Chấp hành án phạt"
+      },
+      {
+        "id": 4,
+        "name": "Phạm Quốc D",
+        "date": "20/05/2017",
+        "crime": "Cố ý gây thương tích",
+        "status": "Đã mãn hạn tù"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name_prison": "CV3",
+    "location": "HA.3 Quận 1",
+    "capacity": 100,
+    "prison": [
+      {
+        "id": 5,
+        "name": "Nguyễn Thị E",
+        "date": "01/01/2018",
+        "crime": "Lừa đảo chiếm đoạt tài sản",
+        "status": "Đang thi hành án"
+      },
+      {
+        "id": 6,
+        "name": "Đỗ Văn F",
+        "date": "12/09/2020",
+        "crime": "Giết người",
+        "status": "Đang chờ kháng cáo"
+      }
+    ]
+  }
+]

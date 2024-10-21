@@ -24,16 +24,16 @@ public class SetPlayhoder {
             @Override
             public void focusGained(FocusEvent e) {
                 if (textField.getText().equals(placeholder)) {
-                    textField.setText(""); // Xóa placeholder khi có focus
-                    textField.setForeground(Color.BLACK); // Chuyển màu chữ sang đen
+                    textField.setText(""); 
+                    textField.setForeground(Color.BLACK);
                 }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
                 if (textField.getText().isEmpty()) {
-                    textField.setText(placeholder); // Hiển thị lại placeholder nếu trống
-                    textField.setForeground(Color.GRAY); // Đặt lại màu placeholder
+                    textField.setText(placeholder); 
+                    textField.setForeground(Color.GRAY); 
                 }
             }
         });
