@@ -11,29 +11,24 @@ Quản lý đăng ký thăm gặp: Ghi nhận và quản lý các đăng ký th�
 Báo cáo và thống kê: Hỗ trợ các báo cáo về số lượng phạm nhân, tình trạng của trại giam, và các đăng ký thăm gặp.
 🚀 Cài đặt và sử dụng
 Yêu cầu hệ thống
-Java JDK 11+
 NetBeans IDE (hoặc IDE khác hỗ trợ Java)
 Thư viện Gson: Được sử dụng để xử lý dữ liệu JSON.
 Hướng dẫn cài đặt
 Clone dự án:
 bash
 Copy code
-git clone https://github.com/username/prison-management-system.git
+git clone https://github.com/handmadee/QL-PHAM-NHAN-TRAI-GIAM-V1
 Cài đặt thư viện Gson:
 Tải và thêm thư viện Gson vào project trong NetBeans.
 Chạy ứng dụng:
 Mở dự án trong NetBeans và chạy QLPHAMNHANTRAIGIAMV1.java.
 📷 Hình ảnh giao diện ứng dụng
 Giao diện Đăng Nhập
-
-Giao diện Quản lý Trại Giam
-
+![Giao diện Đăng Nhập](src/access/images/dlog.png)
 Giao diện Quản lý Phạm Nhân
-
+![Giao diện Quản lý Phạm Nhân](src/access/images/d2.png)
 Giao diện Đăng Ký Thăm Gặp
-
-Lưu ý: Để hiển thị hình ảnh, bạn cần tải ảnh lên thư mục của dự án và thay path/to/your/image.png bằng đường dẫn đến ảnh tương ứng.
-
+![Giao diện Quản lý Phạm Nhân](src/access/images/d3.png)
 🗂️ Cấu trúc dự án
 css
 Copy code
