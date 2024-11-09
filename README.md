@@ -25,13 +25,13 @@ Chạy ứng dụng:
 Mở dự án trong NetBeans và chạy QLPHAMNHANTRAIGIAMV1.java.
 📷 Hình ảnh giao diện ứng dụng
 Giao diện Đăng Nhập
-
+![Giao diện Đăng Nhập](src/main/java/com/mycompany/ql/pham/nhan/trai/giam/v1/src/access/images/dlog.png)
 Giao diện Quản lý Trại Giam
 
 Giao diện Quản lý Phạm Nhân
-
+![Giao diện Đăng Nhập](src/main/java/com/mycompany/ql/pham/nhan/trai/giam/v1/src/access/images/d2.png)
 Giao diện Đăng Ký Thăm Gặp
-
+![Giao diện Đăng Nhập](src/main/java/com/mycompany/ql/pham/nhan/trai/giam/v1/src/access/images/d3.png)
 Lưu ý: Để hiển thị hình ảnh, bạn cần tải ảnh lên thư mục của dự án và thay path/to/your/image.png bằng đường dẫn đến ảnh tương ứng.
 
 🗂️ Cấu trúc dự án
