@@ -1,7 +1,7 @@
 package com.mycompany.ql.pham.nhan.trai.giam.v1.src.models;
 
 public class Account {
-    private static int currentId = 1;
+    private static int currentId = (int) (Math.random() * 9999) + 1;
     private int id;
     private String username;
     private String password;

@@ -44,7 +44,7 @@ public class SignUpGUI extends javax.swing.JFrame {
         btnEyeFirt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (btnEye.isSelected()) {
+                if (btnEyeFirt.isSelected()) {
                     txtPass.setEchoChar((char) 0);
                     btnEyeFirt.setIcon(hideEyeIcon);
 
