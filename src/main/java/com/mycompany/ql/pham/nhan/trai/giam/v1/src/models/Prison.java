@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Prison {
-    private static int idCounter = 1; 
+    private static int idCounter = (int) (Math.random() * 9999) + 1;
     private int id;
     private String namePrison;
     private String location;

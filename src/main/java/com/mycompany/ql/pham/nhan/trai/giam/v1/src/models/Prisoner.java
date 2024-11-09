@@ -1,7 +1,7 @@
 package com.mycompany.ql.pham.nhan.trai.giam.v1.src.models;
 
 public class Prisoner {
-    private static int idCounter = 1; 
+    private static int idCounter = (int) (Math.random() * 9999) + 1;
     private int id;
     private String name;
     private String date;
